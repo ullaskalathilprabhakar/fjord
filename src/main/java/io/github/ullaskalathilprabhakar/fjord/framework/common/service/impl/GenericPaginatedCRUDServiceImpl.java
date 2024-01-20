@@ -1,4 +1,4 @@
-package com.github.ullaspprabhakar.fjord.framework.common.service.impl;
+package io.github.ullaskalathilprabhakar.fjord.framework.common.service.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -7,11 +7,16 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.github.ullaspprabhakar.fjord.framework.common.service.GenericCRUDService;
+import io.github.ullaskalathilprabhakar.fjord.framework.common.service.FilterMarker;
+import io.github.ullaskalathilprabhakar.fjord.framework.common.service.GenericPaginatedCRUDService;
 
-public abstract class GenericCRUDServiceImpl<ENTITY, DTO, ID> implements GenericCRUDService<DTO, ID> {
+public abstract class GenericPaginatedCRUDServiceImpl<ENTITY, DTO, ID,NUM,SIZE> implements GenericPaginatedCRUDService<DTO, ID,NUM,SIZE> {
 
     @Autowired
     private JpaRepository<ENTITY, ID> repository;
@@ -22,7 +27,7 @@ public abstract class GenericCRUDServiceImpl<ENTITY, DTO, ID> implements Generic
     private final Class<DTO> dtoClass;
 
     @SuppressWarnings("unchecked")
-    public GenericCRUDServiceImpl() {
+    public GenericPaginatedCRUDServiceImpl() {
         this.dtoClass = (Class<DTO>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[1];
         this.modelMapper= new ModelMapper();
@@ -78,6 +83,47 @@ public abstract class GenericCRUDServiceImpl<ENTITY, DTO, ID> implements Generic
         return (Class<ENTITY>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
+
+    @Override
+    public Page<DTO> getAll(NUM page, SIZE size) {
+        PageRequest pageable = PageRequest.of((int)page, (int)size);
+        Page<ENTITY> entityPage = repository.findAll(pageable);
+        return entityPage.map(this::convertToDTO);
+    }
+
+	@Override
+	public Page<DTO> getAll(NUM page, SIZE size, FilterMarker filter) {
+        PageRequest pageable = PageRequest.of((int)page, (int)size);
+        Page<ENTITY> entityPage = repository.findAll(pageable);
+        return entityPage.map(this::convertToDTO);
+	}
+
+	@Override
+	public Slice<DTO> getAllSlice(NUM page, SIZE size) {
+	    PageRequest pageRequest = PageRequest.of((int)page, (int)size);
+	    Slice<ENTITY> entitySlice = repository.findAll(pageRequest);
+
+	    List<DTO> dtoList = entitySlice.getContent()
+	            .stream()
+	            .map(this::convertToDTO)
+	            .collect(Collectors.toList());
+
+	    return new SliceImpl<>(dtoList, pageRequest, entitySlice.hasNext());
+	}
+
+	@Override
+	public Slice<DTO> getAllSlice(NUM page, SIZE size, FilterMarker filter) {
+	    PageRequest pageRequest = PageRequest.of((int)page, (int)size);
+	    Slice<ENTITY> entitySlice = repository.findAll(pageRequest);
+
+	    List<DTO> dtoList = entitySlice.getContent()
+	            .stream()
+	            .map(this::convertToDTO)
+	            .collect(Collectors.toList());
+
+	    return new SliceImpl<>(dtoList, pageRequest, entitySlice.hasNext());
+	}
+
 
 
 }

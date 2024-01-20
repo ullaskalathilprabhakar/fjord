@@ -1,4 +1,4 @@
-package com.github.ullaspprabhakar.fjord.framework.common.service.impl;
+package io.github.ullaskalathilprabhakar.fjord.framework.common.service.impl;
 
 import org.modelmapper.AbstractConverter;
 
