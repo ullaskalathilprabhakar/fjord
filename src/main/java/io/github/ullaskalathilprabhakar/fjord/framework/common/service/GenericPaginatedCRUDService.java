@@ -1,4 +1,4 @@
-package com.github.ullaspprabhakar.fjord.framework.common.service;
+package io.github.ullaskalathilprabhakar.fjord.framework.common.service;
 
 import java.util.List;
 import java.util.Optional;

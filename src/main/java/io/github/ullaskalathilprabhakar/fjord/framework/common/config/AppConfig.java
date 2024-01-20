@@ -1,4 +1,4 @@
-package com.github.ullaspprabhakar.fjord.framework.common.config;
+package io.github.ullaskalathilprabhakar.fjord.framework.common.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
