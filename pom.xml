@@ -27,6 +27,11 @@
 			<url>https://github.com/ullaspprabhakar</url>
 		</developer>
 	</developers>
+	<scm>
+		<connection>scm:git:https://github.com/ullaskalathilprabhakar/fjord.git</connection>
+		<developerConnection>scm:git:https://github.com/ullaskalathilprabhakar/Fjord.git</developerConnection>
+		<url>https://github.com/ullaskalathilprabhakar/Fjord</url>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>org.modelmapper</groupId>
