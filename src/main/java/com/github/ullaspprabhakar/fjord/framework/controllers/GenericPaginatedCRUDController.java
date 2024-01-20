@@ -19,7 +19,7 @@ import com.github.ullaspprabhakar.fjord.framework.common.service.GenericPaginate
 public abstract class GenericPaginatedCRUDController<DTO, ID,NUM, SIZE> {
 
 
-    
+
     public abstract GenericPaginatedCRUDService<DTO, ID ,NUM, SIZE>  getService();
 
     public GenericPaginatedCRUDController(GenericPaginatedCRUDService<DTO, ID ,NUM, SIZE> crudService) {
@@ -30,12 +30,12 @@ public abstract class GenericPaginatedCRUDController<DTO, ID,NUM, SIZE> {
     public List<DTO> getAll() {
         return getService().getAll();
     }
-    
+
     @GetMapping("/pages/{num}/size/{size}")
     public Page<DTO> getAllPages(@PathVariable NUM num,@PathVariable SIZE size) {
         return getService().getAll(num, size);
     }
-    
+
     @GetMapping("/slices/{num}/size/{size}")
     public Slice<DTO> getAllSlices(@PathVariable NUM num,@PathVariable SIZE size) {
         return getService().getAllSlice(num, size);

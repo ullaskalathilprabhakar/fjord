@@ -1,5 +1,10 @@
 package com.github.ullaspprabhakar.fjord.framework.common.service.impl;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,13 +14,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.github.ullaspprabhakar.fjord.framework.common.service.FilterMarker;
-import com.github.ullaspprabhakar.fjord.framework.common.service.GenericCRUDService;
 import com.github.ullaspprabhakar.fjord.framework.common.service.GenericPaginatedCRUDService;
-
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class GenericPaginatedCRUDServiceImpl<ENTITY, DTO, ID,NUM,SIZE> implements GenericPaginatedCRUDService<DTO, ID,NUM,SIZE> {
 
@@ -103,30 +102,28 @@ public abstract class GenericPaginatedCRUDServiceImpl<ENTITY, DTO, ID,NUM,SIZE> 
 	public Slice<DTO> getAllSlice(NUM page, SIZE size) {
 	    PageRequest pageRequest = PageRequest.of((int)page, (int)size);
 	    Slice<ENTITY> entitySlice = repository.findAll(pageRequest);
-	
+
 	    List<DTO> dtoList = entitySlice.getContent()
 	            .stream()
 	            .map(this::convertToDTO)
 	            .collect(Collectors.toList());
-	
+
 	    return new SliceImpl<>(dtoList, pageRequest, entitySlice.hasNext());
 	}
 
 	@Override
 	public Slice<DTO> getAllSlice(NUM page, SIZE size, FilterMarker filter) {
-	    // Implement your filtering logic here if needed
-	    // For now, let's assume no filtering is applied
 	    PageRequest pageRequest = PageRequest.of((int)page, (int)size);
 	    Slice<ENTITY> entitySlice = repository.findAll(pageRequest);
-	
+
 	    List<DTO> dtoList = entitySlice.getContent()
 	            .stream()
 	            .map(this::convertToDTO)
 	            .collect(Collectors.toList());
-	
+
 	    return new SliceImpl<>(dtoList, pageRequest, entitySlice.hasNext());
 	}
-	    
-    
+
+
 
 }

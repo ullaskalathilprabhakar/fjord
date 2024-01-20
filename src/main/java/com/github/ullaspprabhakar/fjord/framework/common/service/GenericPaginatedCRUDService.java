@@ -9,13 +9,13 @@ import org.springframework.data.domain.Slice;
 public interface GenericPaginatedCRUDService<DTO, ID,NUM ,SIZE> {
 
     List<DTO> getAll();
-    
+
     Page<DTO> getAll(NUM page,  SIZE size );
-    
+
     Page<DTO> getAll(NUM page,  SIZE size ,FilterMarker filter);
-    
+
     Slice<DTO> getAllSlice(NUM page,  SIZE size );
-    
+
     Slice<DTO> getAllSlice(NUM page,  SIZE size ,FilterMarker filter);
 
     Optional<DTO> getById(ID id);
