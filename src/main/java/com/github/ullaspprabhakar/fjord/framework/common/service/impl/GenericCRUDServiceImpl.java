@@ -1,15 +1,15 @@
 package com.github.ullaspprabhakar.fjord.framework.common.service.impl;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.github.ullaspprabhakar.fjord.framework.common.service.GenericCRUDService;
-
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class GenericCRUDServiceImpl<ENTITY, DTO, ID> implements GenericCRUDService<DTO, ID> {
 
@@ -78,6 +78,6 @@ public abstract class GenericCRUDServiceImpl<ENTITY, DTO, ID> implements Generic
         return (Class<ENTITY>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
-    
+
 
 }
