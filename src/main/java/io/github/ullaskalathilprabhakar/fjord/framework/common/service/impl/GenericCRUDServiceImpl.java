@@ -13,21 +13,18 @@ import io.github.ullaskalathilprabhakar.fjord.framework.common.service.GenericCR
 
 public abstract class GenericCRUDServiceImpl<ENTITY, DTO, ID> implements GenericCRUDService<DTO, ID> {
 
-    @Autowired
-    private JpaRepository<ENTITY, ID> repository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
+    private final JpaRepository<ENTITY, ID> repository;
+    private final ModelMapper modelMapper;
     private final Class<DTO> dtoClass;
 
     @SuppressWarnings("unchecked")
-    public GenericCRUDServiceImpl() {
-        this.dtoClass = (Class<DTO>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[1];
-        this.modelMapper= new ModelMapper();
-
+    public GenericCRUDServiceImpl(JpaRepository<ENTITY, ID> repository, ModelMapper modelMapper) {
+        this.repository = repository;
+        this.modelMapper = modelMapper;
+        this.dtoClass = (Class<DTO>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
+
 
     @Override
     public List<DTO> getAll() {
