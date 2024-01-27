@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,25 +15,24 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import io.github.ullaskalathilprabhakar.fjord.framework.common.controllers.GenericCRUDController;
 import io.github.ullaskalathilprabhakar.fjord.framework.common.service.FilterMarker;
 import io.github.ullaskalathilprabhakar.fjord.framework.common.service.GenericPaginatedCRUDService;
 
 public abstract class GenericPaginatedCRUDServiceImpl<ENTITY, DTO, ID,NUM,SIZE> implements GenericPaginatedCRUDService<DTO, ID,NUM,SIZE> {
 
-    @Autowired
-    private JpaRepository<ENTITY, ID> repository;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private final JpaRepository<ENTITY, ID> repository;
+    private final ModelMapper modelMapper;
 
     private final Class<DTO> dtoClass;
+    
+    private static final Logger logger = LoggerFactory.getLogger(GenericPaginatedCRUDServiceImpl.class);
 
     @SuppressWarnings("unchecked")
-    public GenericPaginatedCRUDServiceImpl() {
-        this.dtoClass = (Class<DTO>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[1];
-        this.modelMapper= new ModelMapper();
-
+    public GenericPaginatedCRUDServiceImpl(JpaRepository<ENTITY, ID> repository, ModelMapper modelMapper) {
+        this.repository = repository;
+        this.modelMapper = modelMapper;
+        this.dtoClass = (Class<DTO>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
     @Override
